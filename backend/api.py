@@ -1,9 +1,9 @@
-from flask import Flask
+from flask import Flask, send_file, jsonify
 from flask_restful import Resource, Api
 import os
 import torch
 import torchvision
-import pandas as pd
+# import pandas as pd
 import torch.nn as nn
 import torch.nn.functional as F
 # from tqdm.notebook import tqdm
@@ -14,8 +14,9 @@ from torch.utils.data import random_split
 from torchvision.utils import make_grid
 import torchvision.transforms as transforms
 from torchvision.datasets.folder import default_loader
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import io, base64
+# from ISR.models import RDN, RRDN
 
 
 app = Flask(__name__)
@@ -71,22 +72,50 @@ class Generator(nn.Module):
     def forward(self, x):
         return self.generator(x)
 
+# def encode_img():
+#     img_byte_arr = io.BytesIO()
+#     img.save(img_byte_arr, format='PNG')
+#     my_encoded_img = base64.encodebytes(img_byte_arr.getvalue()).decode('ascii')
+#     return my_encoded_img
+
+def denorm(img_tensors):
+    stats = (0.5, 0.5, 0.5), (0.5, 0.5, 0.5)
+    return img_tensors * stats[1][0] + stats[0][0]
+
+def upscale(img):
+    rdn = RDN(weights='psnr-large')
+    sr_img = rdn.predict(fake_images)
+    sr_img = rdn.predict(sr_img)
+    return sr_img
 
 @app.route('/generator', methods=['GET'])
 def generator():
+    latent_size = 150
     generator = Generator(latent_size)
     device = torch.device('cpu')
-    generator.load_state_dict(torch.load('./drive/MyDrive/data/gen_150_final.pt', map_location=device))
-    # generator.eval()
+    generator.load_state_dict(torch.load('./gen_150_final.pt', map_location=device))
+
     image_size = (64,64)
     stats = (0.5, 0.5, 0.5), (0.5, 0.5, 0.5)
-    def denorm(img_tensors):
-        return img_tensors * stats[1][0] + stats[0][0]
+
+    # def denorm(img_tensors):
+    #     return img_tensors * stats[1][0] + stats[0][0]
+
     generator = generator.to(device)
 
     xb = torch.randn(1, latent_size, 1, 1) # random latent tensors
     fake_images = generator(xb.to('cpu'))
     fake_images = denorm(fake_images.view(3, 64, 64))
+
+    fake_images = fake_images.permute(1,2,0).cpu().detach().numpy()
+    fake_images = fake_images*255
+    plt.imsave('fakeIm.jpg', fake_images.astype('uint8'), vmin=0, vmax=255)
+
+    # return 'hello'
+    return send_file('fakeIm.jpg', mimetype='image/jpg')
+
+
+
 
 
 

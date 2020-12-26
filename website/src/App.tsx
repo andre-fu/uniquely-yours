@@ -1,26 +1,72 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Axios from 'axios';
+import Path from 'path';
+import Fs from 'fs';
 
 function App() {
+
+  // donwnloadImage();
+
+  const url = 'http://localhost:5000/generator'
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src={url} className="" alt="logo" />
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          Hello world! 
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
     </div>
   );
+
+
 }
+
+// class App extends Component {
+//   constructor() {
+//     super();
+//     this.state = {
+//       photos: []
+//     };  
+//   }
+
+//   componentDidMount() {
+//    fetch('http://localhos:5000').then(response => {
+//      if (!response.ok){
+//        throw Error("Error");
+//      }
+//      return response.json()
+//      .then(allData => {
+//        this.setState({ photos: allData});
+//      })
+//    })
+//   }
+
+//   render () {
+//     return (
+//       <section className="app">
+//         <p>Working</p>
+//       </section>
+//     )
+//   }
+// // }
+
+// async function donwnloadImage(){
+//   const url ='http://localhost:5000/generator';
+//   const path = Path.resolve(__dirname, './fakeimg.jpg');
+//   // const writer = Fs.createWriteStream(path);
+
+//   const response = await Axios({
+//     url,
+//     method: 'GET',
+//     responseType: 'stream'
+//   })
+//   response.data.pipe(writer);
+
+//   return response
+// }
 
 export default App;
