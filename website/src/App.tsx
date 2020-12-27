@@ -7,25 +7,12 @@ import Fs from 'fs';
 import { ImageComponent } from './components/displayImage';
 
 function App() {
-  const [reload, setReload] = React.useState(false);
   const url: string = 'http://localhost:5000/generator';
-
-  const getImage = () => {
-    const url: string = 'http://localhost:5000/generator';
-    return url;
-  }
-
-  const alertBuy = () => {
-    alert(
-      "Please save this Image and message me!"
-    )
-  }
 
   return (
     <div className="App">
       <header className="App-header">
         <ImageComponent url={url}  />
-        <button className="buy" onClick={alertBuy}>Buy on T-Shirt!</button>
       </header>
     </div>
   );
