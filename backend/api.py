@@ -22,21 +22,6 @@ import time
 
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-# api = Api(app)
-
-# class Quotes(Resource):
-#     def get(self):
-#         return {
-#             'William Shakespeare': {
-#                 'quote': ['Love all,trust a few,do wrong to none',
-#                 'Some are born great, some achieve greatness, and some greatness thrust upon them.']
-#         },
-#         'Linus': {
-#             'quote': ['Talk is cheap. Show me the code.']
-#             }
-#         }
-
-# api.add_resource(Quotes, '/')
 
 latent_size = 150
 class Generator(nn.Module):
@@ -73,12 +58,6 @@ class Generator(nn.Module):
     
     def forward(self, x):
         return self.generator(x)
-
-# def encode_img():
-#     img_byte_arr = io.BytesIO()
-#     img.save(img_byte_arr, format='PNG')
-#     my_encoded_img = base64.encodebytes(img_byte_arr.getvalue()).decode('ascii')
-#     return my_encoded_img
 
 def denorm(img_tensors):
     stats = (0.5, 0.5, 0.5), (0.5, 0.5, 0.5)
@@ -117,14 +96,10 @@ def generator():
     # return 'hello'
     return send_file('static/fakeIm.jpg', mimetype='image/jpg')
 
-    # fullpath = "static/fakeIm.jpg"
-    # resp = make_response(open(fullpath).read())
-    # incr+=1
-    # return '<img src=' + url_for('static', filename='fakeIm.jpg') + '?dummy=' + incr + '>'
 
-
-
-
+@app.route('/superres', methods=['GET'])
+def superres():
+    
 
 
 if __name__ == '__main__':

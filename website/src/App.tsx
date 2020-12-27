@@ -5,16 +5,35 @@ import Axios from 'axios';
 import Path from 'path';
 import Fs from 'fs';
 import { ImageComponent } from './components/displayImage';
+import { HashRouter as Router, Route, Link, Switch } from 'react-router-dom';
+
 
 function App() {
   const url: string = 'http://localhost:5000/generator';
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <ImageComponent url={url}  />
-      </header>
-    </div>
+    // style={{ backgroundImage: `url(https://mdbootstrap.com/img/Photos/Horizontal/Nature/full%20page/img(20).jpg)`}}
+    <Router>
+      <div>
+        <div>
+          <nav>
+            <Link to="/">Home</Link>
+            <Link to="/foo">Foo</Link>
+            <Link to="/bar">Bar</Link>
+          </nav>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/foo" component={Foo} />
+            <Route exact path="/bar" component={Bar} />
+          </Switch>
+        </div>
+      </div>
+      <div className="App" >
+        <header className="App-header">
+          <ImageComponent url={url}  />
+        </header>
+      </div>
+    </Router>
   );
 
 
