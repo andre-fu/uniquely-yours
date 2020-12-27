@@ -28,6 +28,16 @@
   color: #61dafb;
 }
 
+.inner {
+  position: absolute;
+}
+
+.image-fade {
+  opacity: 1;
+  animation: fade 2s linear;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -35,4 +45,9 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+@keyframes fade {
+  0%,100% { opacity: 0 }
+  50% { opacity: 1 }
 }

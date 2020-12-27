@@ -4,20 +4,28 @@ import './App.css';
 import Axios from 'axios';
 import Path from 'path';
 import Fs from 'fs';
+import { ImageComponent } from './components/displayImage';
 
 function App() {
+  const [reload, setReload] = React.useState(false);
+  const url: string = 'http://localhost:5000/generator';
 
-  // donwnloadImage();
+  const getImage = () => {
+    const url: string = 'http://localhost:5000/generator';
+    return url;
+  }
 
-  const url = 'http://localhost:5000/generator'
+  const alertBuy = () => {
+    alert(
+      "Please save this Image and message me!"
+    )
+  }
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={url} className="" alt="logo" />
-        <p>
-          Hello world! 
-        </p>
+        <ImageComponent url={url}  />
+        <button className="buy" onClick={alertBuy}>Buy on T-Shirt!</button>
       </header>
     </div>
   );

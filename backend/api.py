@@ -1,4 +1,4 @@
-from flask import Flask, send_file, jsonify
+from flask import Flask, send_file, jsonify, url_for, make_response
 from flask_restful import Resource, Api
 import os
 import torch
@@ -16,10 +16,12 @@ import torchvision.transforms as transforms
 from torchvision.datasets.folder import default_loader
 import matplotlib.pyplot as plt
 import io, base64
+import time
 # from ISR.models import RDN, RRDN
 
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 # api = Api(app)
 
 # class Quotes(Resource):
@@ -88,6 +90,7 @@ def upscale(img):
     sr_img = rdn.predict(sr_img)
     return sr_img
 
+incr = 0
 @app.route('/generator', methods=['GET'])
 def generator():
     latent_size = 150
@@ -109,10 +112,15 @@ def generator():
 
     fake_images = fake_images.permute(1,2,0).cpu().detach().numpy()
     fake_images = fake_images*255
-    plt.imsave('fakeIm.jpg', fake_images.astype('uint8'), vmin=0, vmax=255)
+    plt.imsave('static/fakeIm.jpg', fake_images.astype('uint8'), vmin=0, vmax=255)
 
     # return 'hello'
-    return send_file('fakeIm.jpg', mimetype='image/jpg')
+    return send_file('static/fakeIm.jpg', mimetype='image/jpg')
+
+    # fullpath = "static/fakeIm.jpg"
+    # resp = make_response(open(fullpath).read())
+    # incr+=1
+    # return '<img src=' + url_for('static', filename='fakeIm.jpg') + '?dummy=' + incr + '>'
 
 
 
