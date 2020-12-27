@@ -97,10 +97,6 @@ def generator():
     return send_file('static/fakeIm.jpg', mimetype='image/jpg')
 
 
-@app.route('/superres', methods=['GET'])
-def superres():
-    
-
 
 if __name__ == '__main__':
     app.run(debug=True)
