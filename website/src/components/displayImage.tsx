@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-// import AwesomeButton from 'react-awesome-button/src/components/AwesomeButton';
-// import AwesomeButtonProgress from 'react-awesome-button/src/components/AwesomeButtonProgress';
-// import AwesomeButtonSocial from 'react-awesome-button/src/components/AwesomeButtonSocial';
+import React from 'react';
+// import { Button } from "@chakra-ui/react"
+import { Button } from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.css';
 
 interface Props {
     url: string
@@ -20,15 +20,9 @@ export const ImageComponent = (props: Props) => {
                 <img src={url} className='fade-in'/>
             </div>
             <div>
-                <button className="changeImage" onClick={() => setUrl(props.url + '?' + new Date().getTime())}>
+                <Button colorScheme='danger' className="changeImage" onClick={() => setUrl(props.url + '?' + new Date().getTime())}>
                     View Next Image
-                </button>
-                {/* <AwesomeButton type="primary" onClick={() => setUrl(props.url + '?' + new Date().getTime())}>
-                    Primary
-                </AwesomeButton> */}
-                {/* <button className="changeImage" onClick={() => refreshComponent() }>
-                    View Next Image
-                </button> */}
+                </Button>
             </div>
         </div>
     )
