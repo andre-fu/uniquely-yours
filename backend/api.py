@@ -2,22 +2,22 @@ from flask import Flask, send_file, jsonify, url_for, make_response
 from flask_restful import Resource, Api
 import os
 import torch
-import torchvision
+# import torchvision
 # import pandas as pd
 import torch.nn as nn
 import torch.nn.functional as F
 # from tqdm.notebook import tqdm
-import torchvision.models as models
-from torch.utils.data import Dataset
-from torch.utils.data import DataLoader
-from torch.utils.data import random_split
-from torchvision.utils import make_grid
-import torchvision.transforms as transforms
-from torchvision.datasets.folder import default_loader
+# import torchvision.models as models
+# from torch.utils.data import Dataset
+# from torch.utils.data import DataLoader
+# from torch.utils.data import random_split
+# from torchvision.utils import make_grid
+# import torchvision.transforms as transforms
+# from torchvision.datasets.folder import default_loader
 import matplotlib.pyplot as plt
 import io, base64
 import time
-# from ISR.models import RDN, RRDN
+from ISR.models import RDN, RRDN
 
 
 app = Flask(__name__)
@@ -91,17 +91,18 @@ def generator():
 
     fake_images = fake_images.permute(1,2,0).cpu().detach().numpy()
     fake_images = fake_images*255
-    plt.imsave('static/fakeIm.jpg', fake_images.astype('uint8'), vmin=0, vmax=255)
+    # plt.imsave('static/fakeIm.jpg', fake_images.astype('uint8'), vmin=0, vmax=255)
 
     # return 'hello'
 
-    # rdn = RDN(weights='psnr-large')
-    # # beg = time.time()
-    # sr_img = rdn.predict(fake_images) #to 124
-    # sr_img = rdn.predict(sr_img) #to 500?
-    # print(time.time() - beg)
+    rdn = RDN(weights='psnr-small')
+    beg = time.time()
+    sr_img = rdn.predict(fake_images) #to 124
+    sr_img = rdn.predict(sr_img) #to 500?
+    sr_img = rdn.predict(sr_img)
+    print(time.time() - beg)
     # plt.imshow(sr_img)
-    # plt.imsave('static/fakeIm.jpg', sr_img.astype('uint8'), vmin=0, vmax=255)
+    plt.imsave('static/fakeIm.jpg', sr_img.astype('uint8'), vmin=0, vmax=255)
     return send_file('static/fakeIm.jpg', mimetype='image/jpg')
 
 
