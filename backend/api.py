@@ -63,11 +63,11 @@ def denorm(img_tensors):
     stats = (0.5, 0.5, 0.5), (0.5, 0.5, 0.5)
     return img_tensors * stats[1][0] + stats[0][0]
 
-def upscale(img):
-    rdn = RDN(weights='psnr-large')
-    sr_img = rdn.predict(fake_images)
-    sr_img = rdn.predict(sr_img)
-    return sr_img
+# def upscale(img):
+#     rdn = RDN(weights='psnr-large')
+#     sr_img = rdn.predict(fake_images)
+#     sr_img = rdn.predict(sr_img)
+#     return sr_img
 
 incr = 0
 @app.route('/generator', methods=['GET'])
@@ -94,6 +94,14 @@ def generator():
     plt.imsave('static/fakeIm.jpg', fake_images.astype('uint8'), vmin=0, vmax=255)
 
     # return 'hello'
+
+    # rdn = RDN(weights='psnr-large')
+    # # beg = time.time()
+    # sr_img = rdn.predict(fake_images) #to 124
+    # sr_img = rdn.predict(sr_img) #to 500?
+    # print(time.time() - beg)
+    # plt.imshow(sr_img)
+    # plt.imsave('static/fakeIm.jpg', sr_img.astype('uint8'), vmin=0, vmax=255)
     return send_file('static/fakeIm.jpg', mimetype='image/jpg')
 
 
