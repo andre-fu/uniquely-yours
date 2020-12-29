@@ -97,7 +97,7 @@ def generator(uuid):
     sr_pil = Image.open('static/'+uuid+'.jpg')
     enhancer = ImageEnhance.Sharpness(sr_pil)
 
-    saveSR = enhancer.enhance(7)
+    saveSR = enhancer.enhance(10)
     saveSR.save('static/'+uuid+'.jpg')
     return send_file('static/'+uuid+'.jpg', mimetype='image/jpg')
 
