@@ -70,8 +70,14 @@ def denorm(img_tensors):
 #     return sr_img
 
 incr = 0
-@app.route('/generator', methods=['GET'])
-def generator():
+# @app.route('/<var>', methods=['GET'])
+# def getvar(var):
+#     return var
+
+@app.route('/generator/<uuid>', methods=['GET'])
+def generator(uuid):
+    if os.path.isfile('static/'+ uuid + '.jpg') == True :
+        return send_file('static/' + uuid + '.jpg', mimetype='image/jpg')
     latent_size = 150
     generator = Generator(latent_size)
     device = torch.device('cpu')
@@ -99,11 +105,11 @@ def generator():
     beg = time.time()
     sr_img = rdn.predict(fake_images) #to 124
     sr_img = rdn.predict(sr_img) #to 500?
-    sr_img = rdn.predict(sr_img)
+    sr_img = rdn.predict(sr_img) #to 1024 i think huge image
     print(time.time() - beg)
     # plt.imshow(sr_img)
-    plt.imsave('static/fakeIm.jpg', sr_img.astype('uint8'), vmin=0, vmax=255)
-    return send_file('static/fakeIm.jpg', mimetype='image/jpg')
+    plt.imsave('static/'+uuid+'.jpg', sr_img.astype('uint8'), vmin=0, vmax=255)
+    return send_file('static/'+uuid+'.jpg', mimetype='image/jpg')
 
 
 
