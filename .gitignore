@@ -1,3 +1,6 @@
+backend/isr/
+backend/static/
+
 # Logs
 logs
 *.log
