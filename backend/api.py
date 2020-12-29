@@ -6,14 +6,8 @@ import torch
 # import pandas as pd
 import torch.nn as nn
 import torch.nn.functional as F
-# from tqdm.notebook import tqdm
-# import torchvision.models as models
-# from torch.utils.data import Dataset
-# from torch.utils.data import DataLoader
-# from torch.utils.data import random_split
-# from torchvision.utils import make_grid
-# import torchvision.transforms as transforms
-# from torchvision.datasets.folder import default_loader
+from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageEnhance
 import matplotlib.pyplot as plt
 import io, base64
 import time
@@ -63,16 +57,7 @@ def denorm(img_tensors):
     stats = (0.5, 0.5, 0.5), (0.5, 0.5, 0.5)
     return img_tensors * stats[1][0] + stats[0][0]
 
-# def upscale(img):
-#     rdn = RDN(weights='psnr-large')
-#     sr_img = rdn.predict(fake_images)
-#     sr_img = rdn.predict(sr_img)
-#     return sr_img
-
 incr = 0
-# @app.route('/<var>', methods=['GET'])
-# def getvar(var):
-#     return var
 
 @app.route('/generator/<uuid>', methods=['GET'])
 def generator(uuid):
@@ -107,10 +92,17 @@ def generator(uuid):
     sr_img = rdn.predict(sr_img) #to 500?
     sr_img = rdn.predict(sr_img) #to 1024 i think huge image
     print(time.time() - beg)
-    # plt.imshow(sr_img)
+
     plt.imsave('static/'+uuid+'.jpg', sr_img.astype('uint8'), vmin=0, vmax=255)
+    sr_pil = Image.open('static/'+uuid+'.jpg')
+    enhancer = ImageEnhance.Sharpness(sr_pil)
+
+    saveSR = enhancer.enhance(7)
+    saveSR.save('static/'+uuid+'.jpg')
     return send_file('static/'+uuid+'.jpg', mimetype='image/jpg')
 
+# @app.route('/sweater/<uuid>', methods = ['GET'])
+# def sweater(uuid):
 
 
 if __name__ == '__main__':
