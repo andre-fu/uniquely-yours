@@ -7,7 +7,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from PIL import Image, ImageDraw, ImageFilter
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageEnhance, ImageFont
 import matplotlib.pyplot as plt
 import io, base64
 import time
@@ -94,12 +94,26 @@ def generator(uuid):
     print(time.time() - beg)
 
     plt.imsave('static/'+uuid+'.jpg', sr_img.astype('uint8'), vmin=0, vmax=255)
-    sr_pil = Image.open('static/'+uuid+'.jpg')
-    enhancer = ImageEnhance.Sharpness(sr_pil)
-
-    saveSR = enhancer.enhance(10)
-    saveSR.save('static/'+uuid+'.jpg')
+    # sr_pil = Image.open('static/'+uuid+'.jpg')
+    # sr_pil = sr_pil.filter(ImageFilter.SMOOTH)      #smooth
+    # sr_pil = sr_pil.filter(ImageFilter.SMOOTH)      #smooth
+    # sr_pil = sr_pil.filter(ImageFilter.SMOOTH)      #smooth
+    # sr_pil = sr_pil.filter(ImageFilter.SMOOTH)      #smooth
+    # sr_pil = sr_pil.filter(ImageFilter.SMOOTH)      #smooth
+    # sr_pil = sr_pil.filter(ImageFilter.SMOOTH)      #smooth
+    # coE = ImageEnhance.Color(sr_pil)                #enhance colour
+    # saveSR = coE.enhance(1.5)
+    # enhancer = ImageEnhance.Sharpness(saveSR)       #sharpen image
+    # saveSR = enhancer.enhance(15)
+    # saveSR.save('static/'+uuid+'.jpg')
     return send_file('static/'+uuid+'.jpg', mimetype='image/jpg')
+
+@app.route('/addwords/<uuid>')
+def addwords(uuid):
+
+    im = Image.open('static/'+uuid+'.jpg')
+
+    retur 
 
 # @app.route('/sweater/<uuid>', methods = ['GET'])
 # def sweater(uuid):
