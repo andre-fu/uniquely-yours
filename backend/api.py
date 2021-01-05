@@ -93,8 +93,9 @@ def generator(uuid):
     sr_img = rdn.predict(sr_img) #to 500?
     sr_img = rdn.predict(sr_img) #to 1024 i think huge image
     print(time.time() - beg)
+    image_rescale = rescale(sr_img, 0.5, multichannel=True, anti_aliasing=True)
 
-    plt.imsave('static/'+uuid+'.jpg', sr_img.astype('uint8'), vmin=0, vmax=255)
+    plt.imsave('static/'+uuid+'.jpg', image_rescale.astype('uint8'), vmin=0, vmax=255)
     return send_file('static/'+uuid+'.jpg', mimetype='image/jpg')
 
 @app.route('/addwords/<uuid>')
