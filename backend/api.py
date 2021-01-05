@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import io, base64
 import time
 from ISR.models import RDN, RRDN
+from skimage.transform import rescale, resize, downscale_local_mean
 
 
 app = Flask(__name__)
@@ -94,18 +95,6 @@ def generator(uuid):
     print(time.time() - beg)
 
     plt.imsave('static/'+uuid+'.jpg', sr_img.astype('uint8'), vmin=0, vmax=255)
-    # sr_pil = Image.open('static/'+uuid+'.jpg')
-    # sr_pil = sr_pil.filter(ImageFilter.SMOOTH)      #smooth
-    # sr_pil = sr_pil.filter(ImageFilter.SMOOTH)      #smooth
-    # sr_pil = sr_pil.filter(ImageFilter.SMOOTH)      #smooth
-    # sr_pil = sr_pil.filter(ImageFilter.SMOOTH)      #smooth
-    # sr_pil = sr_pil.filter(ImageFilter.SMOOTH)      #smooth
-    # sr_pil = sr_pil.filter(ImageFilter.SMOOTH)      #smooth
-    # coE = ImageEnhance.Color(sr_pil)                #enhance colour
-    # saveSR = coE.enhance(1.5)
-    # enhancer = ImageEnhance.Sharpness(saveSR)       #sharpen image
-    # saveSR = enhancer.enhance(15)
-    # saveSR.save('static/'+uuid+'.jpg')
     return send_file('static/'+uuid+'.jpg', mimetype='image/jpg')
 
 @app.route('/addwords/<uuid>')
